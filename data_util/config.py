@@ -3,11 +3,11 @@ import os
 root_dir = os.path.expanduser("~")
 
 #train_data_path = os.path.join(root_dir, "ptr_nw/cnn-dailymail-master/finished_files/train.bin")
-train_data_path = os.path.join(root_dir, "ptr_nw/cnn-dailymail-master/finished_files/chunked/train_*")
-eval_data_path = os.path.join(root_dir, "ptr_nw/cnn-dailymail-master/finished_files/val.bin")
-decode_data_path = os.path.join(root_dir, "ptr_nw/cnn-dailymail-master/finished_files/test.bin")
-vocab_path = os.path.join(root_dir, "ptr_nw/cnn-dailymail-master/finished_files/vocab")
-log_root = os.path.join(root_dir, "ptr_nw/log")
+train_data_path = os.path.join(root_dir, "NLP/pointer_summarizer/finished_files/chunked/train_*")
+eval_data_path = os.path.join(root_dir, "NLP/pointer_summarizer/finished_files/val.bin")
+decode_data_path = os.path.join(root_dir, "NLP/pointer_summarizer/finished_files/test.bin")
+vocab_path = os.path.join(root_dir, "NLP/pointer_summarizer/finished_files/vocab")
+log_root = os.path.join(root_dir, "NLP/pointer_summarizer/log")
 
 # Hyperparameters
 hidden_dim= 256
@@ -30,7 +30,7 @@ is_coverage = False
 cov_loss_wt = 1.0
 
 eps = 1e-12
-max_iterations = 500000
+max_iterations = 5
 
 use_gpu=True
 

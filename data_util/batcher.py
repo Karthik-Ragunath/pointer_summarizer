@@ -1,10 +1,15 @@
 #Most of this file is copied form https://github.com/abisee/pointer-generator/blob/master/batcher.py
 
-import Queue
+import queue
 import time
 from random import shuffle
 from threading import Thread
-
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname("__file__")))
+sys.path.append(os.path.dirname(__file__))
+print(os.path.abspath(os.path.dirname("__file__")))
+print(os.path.dirname(__file__))
 import numpy as np
 import tensorflow as tf
 
@@ -158,8 +163,8 @@ class Batcher(object):
     self.mode = mode
     self.batch_size = batch_size
     # Initialize a queue of Batches waiting to be used, and a queue of Examples waiting to be batched
-    self._batch_queue = Queue.Queue(self.BATCH_QUEUE_MAX)
-    self._example_queue = Queue.Queue(self.BATCH_QUEUE_MAX * self.batch_size)
+    self._batch_queue = queue.Queue(self.BATCH_QUEUE_MAX)
+    self._example_queue = queue.Queue(self.BATCH_QUEUE_MAX * self.batch_size)
 
     # Different settings depending on whether we're in single_pass mode or not
     if single_pass:
@@ -174,12 +179,12 @@ class Batcher(object):
 
     # Start the threads that load the queues
     self._example_q_threads = []
-    for _ in xrange(self._num_example_q_threads):
+    for _ in range(self._num_example_q_threads):
       self._example_q_threads.append(Thread(target=self.fill_example_queue))
       self._example_q_threads[-1].daemon = True
       self._example_q_threads[-1].start()
     self._batch_q_threads = []
-    for _ in xrange(self._num_batch_q_threads):
+    for _ in range(self._num_batch_q_threads):
       self._batch_q_threads.append(Thread(target=self.fill_batch_queue))
       self._batch_q_threads[-1].daemon = True
       self._batch_q_threads[-1].start()
@@ -230,13 +235,13 @@ class Batcher(object):
       else:
         # Get bucketing_cache_size-many batches of Examples into a list, then sort
         inputs = []
-        for _ in xrange(self.batch_size * self._bucketing_cache_size):
+        for _ in range(self.batch_size * self._bucketing_cache_size):
           inputs.append(self._example_queue.get())
         inputs = sorted(inputs, key=lambda inp: inp.enc_len, reverse=True) # sort by length of encoder sequence
 
         # Group the sorted Examples into batches, optionally shuffle the batches, and place in the batch queue.
         batches = []
-        for i in xrange(0, len(inputs), self.batch_size):
+        for i in range(0, len(inputs), self.batch_size):
           batches.append(inputs[i:i + self.batch_size])
         if not self._single_pass:
           shuffle(batches)
