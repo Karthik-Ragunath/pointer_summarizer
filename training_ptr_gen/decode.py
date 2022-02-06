@@ -3,9 +3,10 @@
 from __future__ import unicode_literals, print_function, division
 
 import sys
+from importlib import reload
 
 reload(sys)
-sys.setdefaultencoding('utf8')
+#sys.setdefaultencoding('utf8')
 
 import os
 import time
@@ -22,6 +23,8 @@ from train_util import get_input_from_batch
 
 
 use_cuda = config.use_gpu and torch.cuda.is_available()
+
+xrange = range
 
 class Beam(object):
   def __init__(self, tokens, log_probs, state, context, coverage):
@@ -202,6 +205,7 @@ class BeamSearch(object):
 
 if __name__ == '__main__':
     model_filename = sys.argv[1]
+    #sys.stderr.write("Model File Name: " + model_filename)
     beam_Search_processor = BeamSearch(model_filename)
     beam_Search_processor.decode()
 

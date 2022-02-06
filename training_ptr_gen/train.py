@@ -34,7 +34,10 @@ class Train(object):
         if not os.path.exists(self.model_dir):
             os.mkdir(self.model_dir)
 
-        self.summary_writer = tf.summary.FileWriter(train_dir)
+        #self.summary_writer = tf.summary.create_file_writer(train_dir)
+        #self.summary_writer = tf.compat.v1.summary.FileWriter(train_dir)
+        with tf.compat.v1.Graph().as_default():
+            self.summary_writer = tf.compat.v1.summary.FileWriter(train_dir)
 
     def save_model(self, running_avg_loss, iter):
         state = {
@@ -45,6 +48,7 @@ class Train(object):
             'optimizer': self.optimizer.state_dict(),
             'current_loss': running_avg_loss
         }
+        print("Model Directory:", self.model_dir)
         model_save_path = os.path.join(self.model_dir, 'model_%d_%d' % (iter, int(time.time())))
         torch.save(state, model_save_path)
 
@@ -120,21 +124,26 @@ class Train(object):
     def trainIters(self, n_iters, model_file_path=None):
         iter, running_avg_loss = self.setup_train(model_file_path)
         start = time.time()
+        print('N Iters:', n_iters)
         while iter < n_iters:
+            print("Current Iter:", iter)
             batch = self.batcher.next_batch()
             loss = self.train_one_batch(batch)
 
             running_avg_loss = calc_running_avg_loss(loss, running_avg_loss, self.summary_writer, iter)
             iter += 1
 
-            if iter % 100 == 0:
+            #if iter % 100 == 0:
+            if iter % 4 == 0:
                 self.summary_writer.flush()
             print_interval = 1000
-            if iter % print_interval == 0:
+            #if iter % print_interval == 0:
+            if iter % 4 == 0:
                 print('steps %d, seconds for %d batch: %.2f , loss: %f' % (iter, print_interval,
                                                                            time.time() - start, loss))
                 start = time.time()
-            if iter % 5000 == 0:
+            #if iter % 5000 == 0:
+            if iter % 4 == 0:
                 self.save_model(running_avg_loss, iter)
 
 if __name__ == '__main__':

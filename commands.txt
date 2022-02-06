@@ -1,0 +1,3 @@
+./start_train.sh
+./start_decode.sh /home/karthikragunath/NLP/pointer_summarizer/log/train_1644137234/model/model_4_1644137238
+

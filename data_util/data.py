@@ -7,13 +7,13 @@ import csv
 from tensorflow.core.example import example_pb2
 
 # <s> and </s> are used in the data files to segment the abstracts into sentences. They don't receive vocab ids.
-SENTENCE_START = '<s>'
-SENTENCE_END = '</s>'
+SENTENCE_START = b'<s>'
+SENTENCE_END = b'</s>'
 
-PAD_TOKEN = '[PAD]' # This has a vocab id, which is used to pad the encoder input, decoder input and target sequence
-UNKNOWN_TOKEN = '[UNK]' # This has a vocab id, which is used to represent out-of-vocabulary words
-START_DECODING = '[START]' # This has a vocab id, which is used at the start of every decoder input sequence
-STOP_DECODING = '[STOP]' # This has a vocab id, which is used at the end of untruncated target sequences
+PAD_TOKEN = b'[PAD]' # This has a vocab id, which is used to pad the encoder input, decoder input and target sequence
+UNKNOWN_TOKEN = b'[UNK]' # This has a vocab id, which is used to represent out-of-vocabulary words
+START_DECODING = b'[START]' # This has a vocab id, which is used at the start of every decoder input sequence
+STOP_DECODING = b'[STOP]' # This has a vocab id, which is used at the end of untruncated target sequences
 
 # Note: none of <s>, </s>, [PAD], [UNK], [START], [STOP] should appear in the vocab file.
 
@@ -142,7 +142,7 @@ def outputids2words(id_list, vocab, article_oovs):
     words.append(w)
   return words
 
-
+import sys
 def abstract2sents(abstract):
   cur = 0
   sents = []
